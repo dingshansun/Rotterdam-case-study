@@ -34,7 +34,7 @@ money_weight=10;
 
 % demand and initial path flow
 % user class 
-O1D1=800;
+O1D1=1000;
 O1D2=1000;
 O2D1=1000;
 O2D2=1000;
@@ -91,18 +91,15 @@ parfor i=1:multi
     weight=[c_fuel c_park_low c_park_high bus_weight bus_fare tram_fare metro_fare train_fare...
         bus_base tram_base metro_base train_base time_weight money_weight];
     
-    
-    
-    
     % converge criterion
     epsilon=0.01;
     converge=false;
     count=0;
     % X_link=zeros(32,1);
-    X_link=50.*rand(53,1);
+    X_link=50.*rand(228,1);
     X=X_link;
     % iteration
-    H=diag(ones(1,53));
+    H=diag(ones(1,228));
     
     while ~converge
         % projection
@@ -122,26 +119,10 @@ parfor i=1:multi
         count=count+1;
     end
     UE_cost=Link_cost_func(X_link, L_link, speed, weight, freq);
+
     
-    x_c1c2=X_link(1);
-    x_c1c3=X_link(2);
-    x_c3c1=X_link(3);
-    x_c3c4=X_link(4);
-    x_c2c4=X_link(5);
-    x_c4c2=X_link(6);
-    x_c2dc=X_link(7);
-    x_c4dc=X_link(8);
-    
-    x_r3r1=X_link(46);
-    x_r1r3=X_link(47);
-    x_r1r2=X_link(48);
-    x_r3r4=X_link(49);
-    x_r4r2=X_link(50);
-    x_r2r4=X_link(51);
-    x_r2dr=X_link(52);
-    x_r4dr=X_link(53);
     
     TTC(i)=X_link'*UE_cost/10;
-    car_flow(i)=(x_c1c3+x_c3c1+x_r3r1+x_r1r3)+(x_c1c2+x_r1r2)+(x_c2dc+x_r2dr)+(x_c3c4+x_r3r4)+(x_c4dc+x_r4dr)+(x_c2c4+x_c4c2+x_r2r4+x_r4r2);
+    car_flow(i)=sum(X_link(1:30));
 end
 end

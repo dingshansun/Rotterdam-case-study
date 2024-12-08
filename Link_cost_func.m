@@ -738,8 +738,7 @@ t_oc_4=0;
 m_oc_4=0;
 t_oc_5=0;
 m_oc_5=0;
-t_oc=[t_oc_1,t_oc_2,t_oc_3,t_oc_4,t_oc_5];
-m_oc=[m_oc_1,m_oc_2,m_oc_3,m_oc_4,m_oc_5];
+
 % origin to bus node
 t_origin_bus=0.15;
 t_ob_1=t_origin_bus+t_wait_bus(bus_1_flow, 0.5*1/bus_freq);
@@ -752,8 +751,7 @@ t_ob_4=t_origin_bus+t_wait_bus(bus_10_flow, 0.5*1/bus_freq);
 m_ob_4=bus_base;
 t_ob_5=t_origin_bus+t_wait_bus(bus_11_flow, 0.5*1/bus_freq);
 m_ob_5=bus_base;
-t_ob=[t_ob_1,t_ob_2,t_ob_3,t_ob_4,t_ob_5];
-m_ob=[];
+
 % origin to tram node
 t_origin_tram=0.15;
 t_ot_2=t_origin_tram+t_wait_tram(tram_2_flow, 0.5*1/tram_freq);
@@ -762,6 +760,7 @@ t_ot_4=t_origin_tram+t_wait_tram(tram_10_flow, 0.5*1/tram_freq);
 m_ot_4=tram_base;
 t_ot_5=t_origin_tram+t_wait_tram(tram_11_flow, 0.5*1/tram_freq);
 m_ot_5=tram_base;
+
 % origin to metro node
 t_origin_metro=0.2;
 t_om_1=t_origin_metro+t_wait_metro(metro_1_flow, 0.5*1/metro_freq);
@@ -772,8 +771,7 @@ t_om_3=t_origin_metro+t_wait_metro(metro_3_flow, 0.5*1/metro_freq);
 m_om_3=metro_base;
 t_om_4=t_origin_metro+t_wait_metro(metro_10_flow, 0.5*1/metro_freq);
 m_om_4=metro_base;
-t_om_5=t_origin_metro+t_wait_metro(metro_11_flow, 0.5*1/metro_freq);
-m_om_5=metro_base;
+
 % origin to rail node
 t_origin_rail=0.25;
 t_or_3=t_origin_rail+t_wait_rail(rail_3_flow, 0.5*1/train_freq);
@@ -786,6 +784,7 @@ m_or_5=train_base;
 t_car_desti=0.03;
 t_cd_2=t_car_desti+t_findpark(park_9_flow, park_time_9);
 m_cd_2=0;
+
 % from bus node to destination
 t_bus_desti=0.06;
 t_bd_1=t_bus_desti;
@@ -796,21 +795,41 @@ m_bd_2=0;
 t_tram_desti=0.06;
 t_td_1=t_tram_desti;
 m_td_1=0;
+
 % from metro node to destination
 t_metro_desti=0.09;
 t_md_1=t_metro_desti;
 m_md_1=0;
+
 % from rail node to destination
 t_rail_desti=0.09;
 t_rd_1=t_rail_desti;
 m_rd_1=0;
 
+%
+t_o1=[t_oc_1, t_ob_1, t_om_1];
+t_o2=[t_oc_2, t_ob_2, t_ot_2, t_om_2];
+t_o3=[t_oc_3, t_ob_3, t_om_3, t_or_3];
+t_o4=[t_oc_4, t_ob_4, t_ot_4, t_om_4];
+t_o5=[t_oc_5, t_ob_5, t_ot_5, t_or_5];
+t_d1=[t_bd_1, t_td_1, t_md_1, t_rd_1];
+t_d2=[t_cd_2, t_bd_2];
+m_o1=[m_oc_1, m_ob_1, m_om_1];
+m_o2=[m_oc_2, m_ob_2, m_ot_2, m_om_2];
+m_o3=[m_oc_3, m_ob_3, m_om_3, m_or_3];
+m_o4=[m_oc_4, m_ob_4, m_ot_4, m_om_4];
+m_o5=[m_oc_5, m_ob_5, m_ot_5, m_or_5];
+m_d1=[m_bd_1, m_td_1, m_md_1, m_rd_1];
+m_d2=[m_cd_2, m_bd_2];
+
 %% 
-time_cost=[t_car, t_bus, t_tram, t_metro, t_rail];
+time_cost=[t_car, t_bus, t_tram, t_metro, t_rail, t_cb, t_ct, t_cm, t_cr, t_bt, t_bm, t_br, t_tb, t_tm, t_tr, t_mb, t_mt, t_mr, t_rb, t_rt, t_rm,...
+    t_o1, t_o2, t_o3, t_o4, t_o5, t_d1, t_d2];
 
-monetary_cost=[m_car, m_bus, m_tram, m_metro, m_rail];
+monetary_cost=[m_car, m_bus, m_tram, m_metro, m_rail, m_cb, m_ct, m_cm, m_cr, m_bt, m_bm, m_br, m_tb, m_tm, m_tr, m_mb, m_mt, m_mr, ...
+    m_rb, m_rt, m_rm, m_o1, m_o2, m_o3, m_o4, m_o5, m_d1, m_d2];
 
-
+link_cost=time_weight.*time_cost+money_weight.*monetary_cost;
 
 
 end
