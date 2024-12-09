@@ -7,7 +7,7 @@ function t_wait = t_wait_tram(x, t_0)
 % beta=2;
 % t_wait=t_0*(1+alpha*(x/C)^beta);
 
-t_wait=t_0+0.00075*x;
+t_wait=t_0+0.000075*x;
 
 end
 

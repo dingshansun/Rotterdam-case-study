@@ -7,5 +7,5 @@ function t_wait = t_wait_metro(x, t_0)
 % beta=2;
 % t_wait=t_0.*(1+alpha.*(x./C).^beta);
 
-t_wait=t_0+0.0005*x;
+t_wait=t_0+0.00005*x;
 end

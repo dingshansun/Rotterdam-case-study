@@ -1,14 +1,14 @@
-function [TTC, car_flow]=Network_cost_func(para)
+% function [TTC, car_flow]=Network_cost_func(para)
 %% Parallel computing: all the vectors are extended to matrices
 
-% para=[60 6 6 12 0.27 2.2 5]';
+para=[50 6 6 12 6 0.27 2.2 5];
 %% Network information
 %% Define all the constants first
 % Link lengths
 L_12=7.2; L_23=9.5; L_14=4.2; L_16=5.6;L_24=5.9; L_25=8.6; L_35=9.0; L_45=6.5; L_46=4.3; L_47=3.1;
-L_57=5.9; L_58=6.0; L_67=4.1; L_69=7.1; L_78=5.8; L_810=4.9; L_811=5.3; L_910=5.7; L_1011=8.7; L_710=8.4;
+L_57=5.9; L_58=6.0; L_67=4.1; L_69=7.1; L_78=5.8; L_810=4.9; L_811=5.3; L_910=5.7; L_1011=8.7; L_710=8.4; L_34=12.9;
 
-L_link=[L_12 L_23 L_14 L_16 L_24 L_25 L_35 L_45 L_46 L_47 L_57 L_58 L_67 L_69 L_78 L_810 L_811 L_910 L_1011 L_710];
+L_link=[L_12 L_23 L_14 L_16 L_24 L_25 L_35 L_45 L_46 L_47 L_57 L_58 L_67 L_69 L_78 L_810 L_811 L_910 L_1011 L_710 L_34];
 
 % Speed of modes: parameter
 % v_car=50;
@@ -27,23 +27,23 @@ metro_base=1.06;
 metro_fare=0.18;
 train_base=1.1;
 train_fare=0.2;
-time_weight=500;
-money_weight=10;
+time_weight=25;
+money_weight=1;
 % ride_fare=3;
 % ride_base=0.4;
 
 % demand and initial path flow
 % user class 
-O1D1=1000;
-O1D2=1000;
-O2D1=1000;
-O2D2=1000;
-O3D1=1000;
-O3D2=1000;
-O4D1=1000;
-O4D2=1000;
-O5D1=1000;
-O5D2=1000;
+O1D1=10000;
+O1D2=10000;
+O2D1=10000;
+O2D2=10000;
+O3D1=10000;
+O3D2=10000;
+O4D1=10000;
+O4D2=10000;
+O5D1=10000;
+O5D2=10000;
 
 gamma=0.05;  % the convergence parameters to be tuned
 load('Aeq.mat', 'Aeq');
@@ -64,7 +64,7 @@ TTC=nan(multi,1);
 car_flow=nan(multi,1);
 
 %% Parameters are put in the for loop
-parfor i=1:multi
+for i=1:multi
     Para=para(i,:);
     % take it as optimization variables; Public Transit Speed seems not adjustable!!!
     v_car=Para(1); % range from 30-80 km/h
@@ -92,11 +92,11 @@ parfor i=1:multi
         bus_base tram_base metro_base train_base time_weight money_weight];
     
     % converge criterion
-    epsilon=0.01;
+    epsilon=0.3;
     converge=false;
     count=0;
     % X_link=zeros(32,1);
-    X_link=50.*rand(228,1);
+    X_link=500.*rand(228,1);
     X=X_link;
     % iteration
     H=diag(ones(1,228));
@@ -110,6 +110,7 @@ parfor i=1:multi
         X_link_= quadprog(H,Hf_est,[],[],Aeq,beq,lb,[],[],options);
         % convergence judgement
         Error=abs(X_link-X_link_);
+        % epsilon=X_link_*1e-3;
         if all(Error<=epsilon)
             converge=true;
         end
@@ -122,7 +123,9 @@ parfor i=1:multi
 
     
     
-    TTC(i)=X_link'*UE_cost/10;
-    car_flow(i)=sum(X_link(1:30));
+    TTC(i)=X_link'*UE_cost
+    car_flow(i)=sum(X_link(1:30))
 end
-end
+figure
+plot(X(1:30,:)');
+% end

@@ -20,6 +20,7 @@ l_811=L_link(17);
 l_910=L_link(18);
 l_1011=L_link(19);
 l_710=L_link(20);
+l_34=L_link(21);
 %% Parameters
 bus_freq=freq(1);  %
 tram_freq=freq(2);  %
@@ -829,7 +830,7 @@ time_cost=[t_car, t_bus, t_tram, t_metro, t_rail, t_cb, t_ct, t_cm, t_cr, t_bt, 
 monetary_cost=[m_car, m_bus, m_tram, m_metro, m_rail, m_cb, m_ct, m_cm, m_cr, m_bt, m_bm, m_br, m_tb, m_tm, m_tr, m_mb, m_mt, m_mr, ...
     m_rb, m_rt, m_rm, m_o1, m_o2, m_o3, m_o4, m_o5, m_d1, m_d2];
 
-link_cost=time_weight.*time_cost+money_weight.*monetary_cost;
+link_cost=(time_weight.*time_cost+money_weight.*monetary_cost)';
 
 
 end
